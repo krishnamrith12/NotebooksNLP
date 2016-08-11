@@ -12,11 +12,11 @@ downloading Anaconda&#8217;s latest Python 3 version (currently Python 3.5).</p>
 </pre></div>
 </div>
 
-Source: [http://jupyter.readthedocs.io/en/latest/install.html](http://jupyter.readthedocs.io/en/latest/install.html)
+Source: <a href="http://jupyter.readthedocs.io/en/latest/install.html">http://jupyter.readthedocs.io/en/latest/install.html</a>
 
 ### Available Notebooks
-<ol>
-<li>
+
+<ol><li>
  1.Basics_NLP.ipynb - Notebook about preliminaries to be handled for python programming.
 </li><li>
  2.Tokenization - Notebook explaining how to tokenise a corpus and the problems faced in doing so.
