@@ -14,14 +14,16 @@ downloading Anaconda&#8217;s latest Python 3 version (currently Python 3.5).</p>
 
 Source: <a href="http://jupyter.readthedocs.io/en/latest/install.html">http://jupyter.readthedocs.io/en/latest/install.html</a>.
 
-<h3> Available Notebooks </h3>
+<h3>Available Notebooks </h3>
+
+
 <ol class="arabic"><li>
-Demo Notebook - GoT Analysis, as shown in class
+Demo notebook - GoT Analysis, as shown in class.
 </li><li>
 
- Basics_NLP.ipynb - Notebook about preliminaries to be handled for python programming.
+ Basics_NLP - Notebook about preliminaries to be handled for python programming.
 </li><li>
- okenization - Notebook explaining how to tokenise a corpus and the problems faced in doing so.
+ Tokenization - Notebook explaining how to tokenise a corpus and the problems faced in doing so.
 </li><li>
  JellyFishStringMatching - Spelling correction using edit distance and various metrices that are used in calculating edit distance.
 </li><li>
