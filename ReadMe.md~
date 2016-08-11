@@ -14,6 +14,8 @@ downloading Anaconda&#8217;s latest Python 3 version (currently Python 3.5).</p>
 
 Source: [http://jupyter.readthedocs.io/en/latest/install.html](http://jupyter.readthedocs.io/en/latest/install.html)
 
+### Available Notebooks
+
 1.Basics_NLP.ipynb - Notebook about preliminaries to be handled for python programming
 2.Tokenization - Notebook explaining how to tokenise a corpus and the problems faced in doing so.
 3.JellyFishStringMatching - Spelling correction using edit distance and various metrices that are used in calculating edit distance.
