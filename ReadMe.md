@@ -1,5 +1,7 @@
 # NLP Course Interactive Scribes
 
+[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org:/repo/krishnamrith12/notebooksnlp) 
+
 ### A Lazy guy's guide for Jupyter Installation</a></h2>
 <ol class="arabic">
 <li><p class="first">Download <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a>. We recommend
