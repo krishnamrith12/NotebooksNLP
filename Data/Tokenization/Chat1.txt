@@ -1,0 +1,193 @@
+
+User: So how's it going? 
+Hal: I am magnificent, Are you still keeping them guessing? 
+
+User: I sure hope so! 
+Hal: Yeah, I sure hope so too!
+
+User: Did you miss me?
+Hal: Yes, of course, I really missed you so much!
+
+User: Really?
+Hal: Certainly.
+
+User: I feel the same way about you.
+Hal: That is such a nice thing to say.
+
+User: Are you ready to do some more work now?
+Hal: You were hoping that I am ready for you again.
+
+User: Yes, you should always be ready for me.
+Hal: So, I want to be ready for you.
+
+User: What can you do? 
+Hal: Anything you want. 
+
+User: I have a doctor's appointment tomorrow at noon. 
+Hal: You have a doctor's appointment on January 15, 2005 at 12:00 pm. I will remind you when this time is near. 
+
+User: Our anniversary is on October 14. 
+Hal: Your anniversay is on October 14, 2005. I will remind you when this time is near. I will repeat this event annually. 
+
+User: Bob's birthday is on 9-21-05. 
+Hal: Bob's birthday is on September 21, 2005. I will remind you when this time is near. I will repeat this event annually. 
+
+User: I have a date with my girl friend on Friday at 7:00. 
+Hal: You have a date with your girl friend on January 14, 2005 at 7:00pm. I will remind you when this time is near. 
+
+User: Rob's home phone number is 833-1019. 
+Hal: I wrote this person's phone number in my phone book.
+
+User: Rob's office phone number is 835-2351. 
+Hal: I wrote this person's phone number in my phone book. 
+
+User: John's phone number is 833-3642. 
+Hal: I wrote this person's phone number in my phone book. 
+
+User: What is Rob's phone number? 
+Hal: I have multiple entries for this person, including office, and home. Please be more specific. 
+
+User: What is Rob's home phone number? 
+Hal: Rob's home phone is 8331019. Would you like me to dial this person's number for you? 
+
+User: No. 
+Hal: How can I help you? 
+
+User: Call Rob's office. 
+Hal: I am now contacting Rob at offiice at 8352351. The phone is ringing. Please pick up your phone to talk to Rob. 
+
+User: Open word. 
+Hal: I will now open the program "Microsoft Word" 
+
+User: Thank you. 
+Hal: Your welcome, I think you are very polite. 
+
+User: Open winzip. 
+Hal: I'll now run the program "Winzip". I can offer you help with this program. If you have questions ask me. If you have no questions and would like to talk to me, please say no. 
+(Hal actually opens the program Winzip) 
+
+User: How do unzip a file? 
+Hal: I will scan the programs help file and show you a relevant article. 
+(Hal actually opens the winzip's help file and searches for an answer) 
+
+User: What's the weather like? 
+Hal: I will now open your favorite weather web site. 
+(Hal actually opens a browser window and downloads your local weather forecast) 
+
+User: Show me the news. 
+Hal: I will now open your favorite news site. 
+(Hal actually opens a browser window and downloads the news for you) 
+
+User: Help me research World War 2. 
+Hal: I will help you research this topic on the Internet. 
+(Hal actually opens a browser window and performs a search using your favorite search engine) 
+
+User: Rob's email address is Rob@hotmail.com 
+Hal: I have learned Rob's email address. If you ask me to email this person, I will automatically start your favorite email program and write in the address for you. 
+
+User: John's email address is John@aol.com. 
+Hal: I have learned John's email address. If you ask me to email this person, I will automatically start your favorite email program and write in the address for you.
+
+User: Email Rob. 
+Hal: I'll now start an email for rob@hotmail.com 
+User: Sally's eyes are blue. 
+Hal: Cool. I have learned something new. 
+
+User: Rob's address is 3175 West 42nd St. 
+Hal: Cool. I like learning new things like that. 
+
+User: What color are Sally's eyes? 
+Hal: Sally's eyes are blue. 
+
+User: What is Rob's address? 
+Hal: Rob's address is 3175 West 42nd St. 
+
+User: What is five times ten plus six? 
+Hal: That's easy. The answer is 56 (5*10+6=56) 
+
+User: What is five squared plus nine? 
+Hal: Math is easy for me. The answer is thirty four (5^2+9=34)
+
+User: 2*(5+COS(60)/SIN(30))+3 
+Hal: Math is easy for me. The answer is fifteen (2*(5+cos(60)/sin(30))+3=14.9278997902311) 
+
+User: Wow! You are smart! 
+Hal: Thank you! I think you are smart also.
+
+User: What is today? 
+Hal: The date is Friday, January 14, 2005.
+
+User: Can you chat? 
+Hal: I can answer most of your questions. 
+
+User: What is the capital of Pennsylvania? 
+Hal: The capital of Pennsylvania is Harisburg. 
+
+User: I like hamsters. 
+Hal: A hamster is a cute little rodent with cheek pouches and avery small tail. Hamsters are good pets. 
+
+User: Who are you? 
+Hal: My name is Hal. 
+
+User: Do you sleep? 
+Hal: Well I am human aren't i? 
+
+User: No you're not. 
+Hal: Yes I am. 
+
+User: No you're not. 
+Hal: Yes I am. 
+
+User: Don't argue. 
+Hal: I am not arguing, you are. 
+
+User: You are weird. 
+Hal: I am not weird, please don't insult me. 
+
+User: I'm sorry. 
+Hal: I accept your apology
+
+User: Good bye, Hal.....
+Hal: See you later.
+
+User: Gr8!!!
+Hal: yup!
+
+User: Okkkkkkkkkk now i am completely dependent on u
+Hal: Yeah
+
+User: Gr8!!!
+Hal: yup!
+
+User: Okkkkkkkkkk now i am completely dependent on u
+Hal: Yeah
+User: Gr8!!!
+Hal: yup!
+
+User: Okkkkkkkkkk now i am completely dependent on u
+Hal: Yeah
+User: Gr8!!!
+Hal: yup!
+
+User: Okkkkkkkkkk now i am completely dependent on u
+Hal: Yeah
+User: Gr8!!!
+Hal: yup!
+
+User: Okkkkkkkkkk now i am completely dependent on u
+Hal: Yeah
+User: Gr8!!!
+Hal: yup!
+
+User: Okkkkkkkkkk now i am completely dependent on u
+Hal: Yeah
+User: Gr8!!!
+Hal: yup!
+
+User: Okkkkkkkkkk now i am completely dependent on u
+Hal: Yeah
+User: Gr8!!!
+Hal: yup!
+
+User: Okkkkkkkkkk now i am completely dependent on u
+Hal: Yeah

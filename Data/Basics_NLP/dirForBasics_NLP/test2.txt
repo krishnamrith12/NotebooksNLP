@@ -1,0 +1,413 @@
+void datatolrt(Mat& generate, Mat& rehrlrt)
+{
+	Mat rect(4, 4, CV_32FC1);
+	int horizontal = floor((rehrlrt.cols - 3) / 2);
+	int row_indx = 0;
+	int row_rect = 0;
+	int col_rect = 0;
+
+	for (int row_indx = 0; row_indx < generate.rows - 1000; row_indx++)
+	{
+		col_rect = 2 * (row_indx % horizontal);
+		row_rect = 2 * (row_indx / horizontal);
+		make_rect(rect, generate, row_indx);
+		write_rect(rect, rehrlrt, row_rect, col_rect);
+	}
+
+	for (int i = 0; i < rehrlrt.rows; i++)
+	{
+		for (int j = 0; j < rehrlrt.cols; j++)
+		{
+			if (i>1 & i < rehrlrt.rows - 2 & j>1 & j < rehrlrt.cols - 2)
+				rehrlrt.at<float>(i, j) /= 4;
+			else if (((i == 0 || i == 1 || i == rehrlrt.rows - 2 || i == rehrlrt.rows - 1) & (j>1 & j < rehrlrt.cols - 2)) || ((j == 0 || j == 1 || j == rehrlrt.cols - 2 || j == rehrlrt.cols - 1) & (i>1 & i < rehrlrt.rows - 2)))
+				rehrlrt.at<float>(i, j) /= 2;
+		}
+	}
+
+}
+
+void write_rect(Mat& rect, Mat& rehrlrt, int row_rect, int col_rect)
+{
+	for (int k = 0; k < 4; k++)
+	{
+		for (int l = 0; l < 4; l++)
+		{
+			rehrlrt.at<float>(row_rect + k, col_rect + l) += (float)rect.at<float>(k, l);
+		}
+	}
+}
+
+void make_rect(Mat& rect, Mat& generate, int generate_rowno)
+{
+	for (int k = 0; k < 4; k++)
+	{
+		for (int l = 0; l < 4; l++)
+		{
+			rect.at<float>(k, l) = (float)generate.at<float>(generate_rowno, 4 * k + l);
+		}
+	}
+}
+
+
+void trainbynn(Mat& train, Mat& res, Mat& generate, Mat& train_data)
+{
+
+	Mat label = Mat::zeros(res.rows, 1, CV_32FC1);
+	for (int i = 0; i < 16; i++)
+	{
+		res.col(i).copyTo(label);
+		if (train.rows == label.rows)
+		{
+			cout << "H H Entered into " << i << "th the Neural Network" << endl;
+			Ptr< ANN_MLP >  nn = ANN_MLP::create();
+
+			//setting the NN layer size
+			cv::Mat layers = cv::Mat(6, 1, CV_32SC1);
+			layers.row(0) = cv::Scalar(4);
+			layers.row(1) = cv::Scalar(3);
+			layers.row(2) = cv::Scalar(3);
+			layers.row(3) = cv::Scalar(2);
+			layers.row(4) = cv::Scalar(2);
+			layers.row(5) = cv::Scalar(1);
+			nn->setLayerSizes(layers);
+
+			nn->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM);
+			nn->setTrainMethod(cv::ml::ANN_MLP::BACKPROP);
+			nn->setBackpropMomentumScale(0.1);
+			nn->setBackpropWeightScale(0.1);
+			//nn->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, (int)100000, 0.01));
+
+
+			cout << "Learning " << endl;
+			if (!nn->train(train, ml::ROW_SAMPLE, label))
+			{
+				cout << "H fail " << train.rows << endl;
+				cout << "H fail " << res.rows << endl;
+				cout << "H Learning failed" << endl;
+				while (1){}
+				waitKey(0);
+			}
+
+			cout << "Learnt " << endl;
+			/*********************  Here Ends training ofthe Neural Networks ******************************/
+
+			/***************************Predicting*************************************/
+
+			Mat ans(train_data.rows, 16, CV_32F);
+			//Mat samples(1, 4, CV_32F);
+			//samples.at<float>(0, 0) = 3; samples.at<float>(0, 1) = 3; samples.at<float>(0, 2) = 3; samples.at<float>(0, 3) = 2;
+			nn->predict(train_data, ans);
+			Mat ans1(train_data.rows, 16, CV_8UC1);
+			ans.convertTo(ans1, CV_8UC1);
+
+			ans1.copyTo(generate.col(i));
+			generate.convertTo(generate, CV_32FC1);
+
+
+		}
+	}
+	cout << "\n Gopal \n";
+}
+double myPSNR(Mat& I1, Mat& I2)
+{
+	Mat s1(I1.rows, 16, CV_8UC1);
+	absdiff(I1, I2, s1);       // |I1 - I2|
+	s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
+	s1 = s1.mul(s1);           // |I1 - I2|^2
+
+	Scalar s = sum(s1);        // sum elements per channel
+
+	double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels
+	cout << "sse" << endl;
+	cout << "s.val[0] = " << s.val[0] << endl;
+	cout << "s.val[1] = " << s.val[1] << endl;
+	cout << "s.val[2] = " << s.val[2] << endl;
+	cout << "I1.channels() = " << I1.channels() << endl;
+	cout << "I1.total() = " << I1.total() << endl;
+
+	if (sse <= 1e-10) // for small values return zero
+		return 0;
+	else
+	{
+		double mse = sse / (double)(I1.channels() * I1.total());
+		double psnr = 10.0 * log10((8 * 8) / mse);
+		return psnr;
+	}
+}
+double getPSNR(Mat& I1, Mat& I2)
+{
+	Mat s1(I1.rows, 16, CV_8UC1);
+	absdiff(I1, I2, s1);       // |I1 - I2|
+	s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
+	s1 = s1.mul(s1);           // |I1 - I2|^2
+
+	Scalar s = sum(s1);        // sum elements per channel
+
+	double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels
+	/*cout << "sse" << endl;
+	cout << "s.val[0] = " << s.val[0]<<  endl;
+	cout << "s.val[1] = " << s.val[1] << endl;
+	cout << "s.val[2] = " << s.val[2] << endl;*/
+
+
+	if (sse <= 1e-10) // for small values return zero
+		return 0;
+	else
+	{
+		double mse = sse / (double)(I1.channels() * I1.total());
+		double psnr = 10.0 * log10((255 * 255) / mse);
+		return psnr;
+	}
+}
+
+void copy(Mat& input, Mat& output, int n){
+
+	for (int i = 0; i<output.rows - 1; i++)
+	{
+		for (int j = 0; j < output.cols; j++)
+		{
+			output.at<float>(i, j) = (float)input.at<float>(i, j);
+		}
+	}
+
+	for (int i = 0; i < n*n; i++){
+		output.at<float>(output.rows - 1, i) = 0;
+	}
+}
+
+void maketrarinfile(Mat& train)
+{
+	ofstream trainfile("train.txt");
+	for (int i = 0; i<train.rows; i++)
+	{
+		for (int j = 0; j < train.cols; j++)
+		{
+			trainfile << (float)train.at<float>(i, j) << " ";
+		}
+		trainfile << "\n";
+	}
+	trainfile.close();
+}
+
+void makeresfile(Mat& res)
+{
+	ofstream resfile("res.txt");
+	for (int i = 0; i<res.rows; i++)
+	{
+		for (int j = 0; j < res.cols; j++)
+		{
+			resfile << (float)res.at<float>(i, j) << " ";
+		}
+		resfile << "\n";
+	}
+	resfile.close();
+}
+
+int removezeros(Mat& input, Mat& output, int n, Mat& train_data, Mat& response)
+{
+	vector<int> z;
+	if (n == 2){
+		z = { 0, 0, 0, 0 };
+	}
+	else{
+		z = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	}
+	vector<int> z1 = { 0, 0, 0, 0 };
+	vector<int> z2 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	int j = 0;
+
+	for (int i = 1; i < output.rows; i++)
+	{
+		if ((vector<int>)input.row(i) != z && (vector<int>)train_data.row(i) != z1 && (vector<int>)response.row(i) != z2)
+		{
+			for (int l = 0; l < n*n; l++){
+				output.at<float>(j, l) = (float)input.at<float>(i, l);
+			}
+			//cout << output.at<float>(j, 2) << endl;
+			j++;
+		}
+	}
+
+	return j;
+}
+
+void makedata(Mat& lrt, Mat& data, int n)
+{
+	string line;
+	int k = 0;
+	//data.create((lrt.rows - n + 1)*(lrt.cols - n + 1), n*n, CV_32FC1);
+	if (n == 2)
+		data.create((lrt.rows - 1)*(lrt.cols - 1), 4, CV_32FC1);
+	else
+		data.create((lrt.rows / 2 - 1)*(lrt.cols / 2 - 1), 16, CV_32FC1);
+	make_training_data(lrt, n);
+	ifstream infile("indata.txt");
+	while (getline(infile, line))
+	{
+		istringstream iss(line);
+
+		if (n == 2)
+		{
+			float a, b, c, d;
+			if (!(iss >> a >> b >> c >> d)) { break; } // error				
+			int l = 0;
+			data.at<float>(k, l) = a; l++;
+			data.at<float>(k, l) = b; l++;
+			data.at<float>(k, l) = c; l++;
+			data.at<float>(k, l) = d; l++;
+			k++;
+		}
+
+
+
+		if (n == 4)
+		{
+			float a1, b1, c1, d1;
+			float a2, b2, c2, d2;
+			float a3, b3, c3, d3;
+			float a4, b4, c4, d4;
+			if (!(iss >> a1 >> b1 >> c1 >> d1 >> a2 >> b2 >> c2 >> d2 >> a3 >> b3 >> c3 >> d3 >> a4 >> b4 >> c4 >> d4)) { break; } // error				
+			int l = 0;
+			data.at<float>(k, l) = a1; l++;
+			data.at<float>(k, l) = b1; l++;
+			data.at<float>(k, l) = c1; l++;
+			data.at<float>(k, l) = d1; l++;
+			data.at<float>(k, l) = a2; l++;
+			data.at<float>(k, l) = b2; l++;
+			data.at<float>(k, l) = c2; l++;
+			data.at<float>(k, l) = d2; l++;
+			data.at<float>(k, l) = a3; l++;
+			data.at<float>(k, l) = b3; l++;
+			data.at<float>(k, l) = c3; l++;
+			data.at<float>(k, l) = d3; l++;
+			data.at<float>(k, l) = a4; l++;
+			data.at<float>(k, l) = b4; l++;
+			data.at<float>(k, l) = c4; l++;
+			data.at<float>(k, l) = d4; l++;
+			k++;
+		}
+	}
+}
+
+void make_training_data(Mat& input, int n)
+{
+	ofstream indata("indata.txt");
+	for (int i = 0; i<input.rows - (n - 1); i = i + n / 2)
+	{
+		for (int j = 0; j<input.cols - (n - 1); j = j + n / 2)
+		{
+
+
+			for (int k = 0; k < n; k++)
+			{
+				for (int l = 0; l < n; l++)
+				{
+					indata << (float)input.at<float>(i + k, j + l) << " ";
+				}
+			}
+			indata << "\n";
+			//indata << (float)input.at<float>(i, j) << " "<< (float)input.at<float>(i, j + 1) << " " << (float)input.at<float>(i + 1, j) << " " << (float)input.at<float>(i + 1, j + 1) << "\n";
+		}
+	}
+	indata.close();
+}
+
+int maskfn(Mat&input, int r, int c, int delta, int crow, int ccol)
+{
+	int result = 0;
+	for (int i = -r / 2; i <= r / 2; i++)
+	{
+		for (int j = -c / 2; j <= c / 2; j++)
+		{
+			if (i != 0 || j != 0)
+			{
+				if (input.at<uchar>(crow, ccol) > (input.at<uchar>(crow + i, ccol + j) - delta))
+					result++;
+			}
+		}
+	}
+	return result;
+}
+void make_train_mat(Mat& input, Mat& train_data)
+{
+	train_data.create((input.rows - 1)*(input.cols - 1), 4, CV_32FC1);
+	int k = 0;
+	for (int i = 0; i<input.rows - 1; i++)
+	{
+		for (int j = 0; j<input.cols - 1; j++)
+		{
+			int l = 0;
+			train_data.at<float>(k, l) = (float)input.at<float>(i, j); l++;
+			train_data.at<float>(k, l) = (float)input.at<float>(i, j + 1); l++;
+			train_data.at<float>(k, l) = (float)input.at<float>(i + 1, j); l++;
+			train_data.at<float>(k, l) = (float)input.at<float>(i + 1, j + 1); l++;
+			k++;
+		}
+	}
+
+}
+
+
+void make_response_mat(Mat& input, Mat& response)
+{
+	response.create(input.rows*input.cols, 16, CV_32FC1);
+	int k = 0;
+	for (int i = 0; i<input.rows - 3; i = i + 2)
+	{
+		for (int j = 0; j<input.cols - 3; j = j + 2)
+		{
+			int l = 0;
+			response.at<float>(0, 0) = (float)input.at<float>(i, j);
+			response.at<float>(k, l) = (float)input.at<float>(i, j + 1); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i, j + 2); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i, j + 3); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 1, j); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 1, j + 1); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 1, j + 2); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 1, j + 3); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 2, j); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 2, j + 1); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 2, j + 2); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 2, j + 3); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 3, j); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 3, j + 1); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 3, j + 2); l++;
+			response.at<float>(k, l) = (float)input.at<float>(i + 3, j + 3); l++;
+			k++;
+		}
+	}
+}
+
+
+
+
+void make_training_response(Mat& input)
+{
+	ofstream outdata("outdata.txt");
+	for (int i = 0; i<input.rows - 3; i = i + 2)
+	{
+		for (int j = 0; j < input.cols - 3; j = j + 2)
+		{
+			outdata << (float)input.at<float>(i, j) << " " << (float)input.at<float>(i, j + 1) << " " << (float)input.at<float>(i, j + 2) << " " << (float)input.at<float>(i, j + 3) << " " << (float)input.at<float>(i + 1, j) << " " << (float)input.at<float>(i + 1, j + 1) << " " << (float)input.at<float>(i + 1, j + 2) << " " << (float)input.at<float>(i + 1, j + 3) << " " << (float)input.at<float>(i + 2, j) << " " << (float)input.at<float>(i + 2, j + 1) << " " << (float)input.at<float>(i + 2, j + 2) << " " << (float)input.at<float>(i + 2, j + 3) << " " << (float)input.at<float>(i + 3, j) << " " << (float)input.at<float>(i + 3, j + 1) << " " << (float)input.at<float>(i + 3, j + 2) << " " << (float)input.at<float>(i + 3, j + 3) << "\n";
+
+		}
+	}
+	outdata.close();
+}
+
+//void show_images()
+//{
+//	namedWindow("Display window", WINDOW_AUTOSIZE);// Create a window for display.
+//	imshow("Display window", input);                   // Show our original image inside it.
+//	
+//	namedWindow("original lrt window", WINDOW_AUTOSIZE);// Create a window for display.
+//	imshow("original lrt window", hr_lrt);                   // Show our LRT inside it.
+//
+//	namedWindow("Low res image window", WINDOW_AUTOSIZE);// Create a window for display.
+//	imshow("Low res image window", lr_img);                   // Show our image inside it.
+//
+//	namedWindow("lr_lrt", WINDOW_AUTOSIZE);// Create a window for display.
+//	imshow("lr_lrt", lr_lrt);
+//}
+
