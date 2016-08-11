@@ -12,10 +12,9 @@ downloading Anaconda&#8217;s latest Python 3 version (currently Python 3.5).</p>
 </pre></div>
 </div>
 
-Source: <a href="http://jupyter.readthedocs.io/en/latest/install.html">http://jupyter.readthedocs.io/en/latest/install.html</a>
+Source: <a href="http://jupyter.readthedocs.io/en/latest/install.html">http://jupyter.readthedocs.io/en/latest/install.html</a>.
 
-### Available Notebooks
-
+<h3> Available Notebooks </h3>
 <ol><li>
  1.Basics_NLP.ipynb - Notebook about preliminaries to be handled for python programming.
 </li><li>
