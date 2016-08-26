@@ -32,4 +32,7 @@ Demo notebook - GoT Analysis, as shown in class.
  LanguageModels - Notebook about language modelling
 </li><li>
  Smoothing,Perplexity And Backoff - Notebook about Smoothing ,Perplexity And Backoff
-</li></ol>
+</li>
+
+<li>HMM</li>
+</ol>
